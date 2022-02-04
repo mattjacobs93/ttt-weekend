@@ -10,9 +10,9 @@
 </head>
 <body>
 	<h1>Tic-Tac-Toe</h1>
-	<h2 id="message">Message</h2>
+	<h2 id="message">Choose players then press "start" to begin game</h2>
 
-	<section class="board">
+	<section id="board" class="board">
 		<div id="sq0"></div>
 		<div id="sq1"></div>
 		<div id="sq2"></div>
@@ -23,27 +23,29 @@
 		<div id="sq7"></div>
 		<div id="sq8"></div>
 	</section>
+
+	<p id="active-player-msg">Active Player:</p>
 	
-	<form>
+	<form id="form">
 		<p>Player 1 (X) :</p>
-		<select name="player1" id="player1">
-			<option value="human">Human</option>
+		<select name="player1-type" id="player1-type">
+			<option value="human" selected="selected">Human</option>
 			<option value="ai-easy">AI - Easy</option>
 			<option value="ai-medium">AI - Medium</option>
 			<option value="ai-hard">AI - Hard</option>
 		</select>
 
 		<p>Player 2 (O) :</p>
-		<select name="player2" id="player2">
-			<option value="human">Human</option>
+		<select name="player2-type" id="player2-type">
+			<option value="human" selected="selected">Human</option>
 			<option value="ai-easy">AI - Easy</option>
 			<option value="ai-medium">AI - Medium</option>
 			<option value="ai-hard">AI - Hard</option>
 		</select>
 		<br>
 		<br>
-		<button id="start">Start</button>
-		<button id="restart">Restart</button>
+		<button type="submit" id="start">Start</button>
+		<button type="reset" id="restart" disabled>Reset</button>
 	</form>
 </body>
 </html>
