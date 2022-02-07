@@ -6,7 +6,7 @@ const AIPlayerMedium = Symbol('AIPlayerMedium')
 const AIPlayerHard = Symbol('AIPlayerHard')
 const EASY_DEPTH = 1
 const MEDIUM_DEPTH = 4
-const HARD_DEPTH = 9
+const HARD_DEPTH = 12
 const chars = ['X','O']
 const waysToWinArray = ['036','147','258','012','345','678','048','246']
 
@@ -29,6 +29,7 @@ const form = document.getElementById('form')
 const activePlayerMsg = document.getElementById('active-player-msg')
 const boardElement = document.getElementById('board')
 const msg = document.getElementById('message')
+const divs = document.querySelectorAll('div')
 
 //console.log(form)
 
@@ -45,11 +46,13 @@ class Player {
   #chars
   #playerNum
   #nextPlayer
+  #hoverColor
   
 
   constructor(playerNum) {
     this.#playerNum = playerNum
     this.#chars = ['X','O']
+    this.#hoverColor = (playerNum === 1) ? 'red' : 'blue'
   }
 
   getPlayerNum () {
@@ -57,6 +60,7 @@ class Player {
   }
 
   getNextPlayer() {
+    divs.forEach(div=>{div.setAttribute('class',this.#hoverColor)})
     return this.#nextPlayer
   }
 
@@ -294,6 +298,9 @@ class Controller {
       
       else {
         activePlayer = activePlayer.getNextPlayer()
+        //testing
+        view.display(currentBoard)
+        //testing
         activePlayer.makeDecision(currentBoard)
       } 
     }
@@ -405,6 +412,19 @@ function boardClicked (e) {
   if (gameActive && activePlayer.isHumanPlayer() === true && !e.target.classList.contains('board')) {
   boxClickedIndex = parseInt(e.target.id[e.target.id.length -1])
   view.boardClicked(boxClickedIndex)
+  }
+
+
+  //remove the below else block to disable start by clicking, glitches if AI is first, but human clicks to start
+
+  else {
+    //gameActive = true
+    //boxClickedIndex = parseInt(e.target.id[e.target.id.length -1])
+    //view.boardClicked(boxClickedIndex)
+    onClickStart(e)
+    controller.moveSelected(e.target.id[e.target.id.length -1])
+    //view.display()
+
   }
 }
 

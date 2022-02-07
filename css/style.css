@@ -1,12 +1,18 @@
 body {
-    background-color: white;
+    background-color: black;
 	/* Use a system font, if none are available use an available sans-sarif   font */
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
 		Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	margin: 0;
+	margin: 0 auto;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  color: white;
+  align-items: center;
+}
+
+p {
+  color: white;
 }
 
 section.board {
@@ -17,8 +23,41 @@ section.board {
 }
 
 div {
-  border: 3px solid black;
+  border: 3px solid white;
   font-size: 8vmin;
   text-align: center;
   vertical-align: middle;
+}
+
+
+button, select {
+  color: black;
+  background-color: white;
+}
+
+
+button:disabled, select:disabled {
+  color: white;
+  background-color: lightgrey;
+}
+
+select {
+  color: black;
+}
+
+
+.red:hover {
+  border: 3px solid red;
+}
+
+.blue:hover {
+  border: 3px solid blue;
+}
+
+h1 {
+  color: orange;
+}
+
+h2 {
+  color: seagreen;
 }
