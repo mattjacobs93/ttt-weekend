@@ -80,12 +80,9 @@ class Player {
 
 
 class HumanPlayer extends Player {
- // #playerNum
- // #nextPlayer
 
   constructor(playerNum) {
     super(playerNum)
-    //this.#isHumanPlayer = true
   }
 
   isHumanPlayer() {
@@ -96,8 +93,7 @@ class HumanPlayer extends Player {
 }
 
 class AIPlayer extends Player {
- // #playerNum
- // #nextPlayer
+
   #depth 
 
   constructor(playerNum,depth) {
@@ -105,7 +101,7 @@ class AIPlayer extends Player {
     this.#depth = depth
     
     
-    //this.#isHumanPlayer = false
+    
   }
 
   isHumanPlayer() {
@@ -122,23 +118,6 @@ class AIPlayer extends Player {
     function minimax  (board, currDepth, maxDepth,player) {
 
 
-/*
-      const checkForWinner(board) {
-    
-        for (let i = 0; i < 3; i++) {
-          if (board[i*3] && board[i*3] === board[i*3+1] && board[i*3] === board[i*3+2]) return board[i*3]
-          if (board[i] && board[i] === board[i+3] && board[i] === board[i+6]) return board[i]
-        }
-  
-        if (board[0] && board[0] === board[4] && board[0] === board[8]) return board[0]
-        if (board[2] && board[2] === board[4] && board[2] === board[6]) return board[2]
-  
-        if (board.every(el=>el)) return 3 //tie
-  
-      return -1 //game is still in play
-    }
-    */
-
       let gameOver = controller.checkIfGameIsOver(board)
 
       if (gameOver===1) return Infinity
@@ -148,22 +127,14 @@ class AIPlayer extends Player {
 
 
       const makeChildren = (board,player) => {
-        //console.log('I am about to make children:')
-        //console.log('This is the current board:', board)
         let children = []
     
         for (let i = 0; i < BOARD_SIZE; i++) {
           if (!board[i]) {
-            //let child = {}
             
             let child = [...board]
-            //child.board = [...board]
             child[i] = player
-            //child.move = i
             children.push(child)
-            //console.log('Parent Board: ', board)
-            //console.log('player',player)
-            //console.log('Child Board: ', child)
           }
         }
         return children
@@ -174,16 +145,6 @@ class AIPlayer extends Player {
         let opponent = Math.max(((num + 1) % 3),1)
         let possibleWaystoWin = waysToWinArray.filter(w => {return w.split('').map(num=> { return board[parseInt(num)] === opponent ? 1 : 0  }).reduce((a,c)=>a+c) === 0})
        
-
-       //let waysToWinArrayCopy = [...waysToWinArray]
-       //console.log(possibleWaystoWin)
-
-       //possibleWaystoWin = []
-       //waysToWinArray.filter(w => {
-
-      // })
-
-
         console.log('In Num Ways to Win:',board,num,possibleWaystoWin,possibleWaystoWin.length)
         return possibleWaystoWin.length
     }
@@ -203,7 +164,6 @@ class AIPlayer extends Player {
       let maxValue = -1000000
       let minValue = 10000000
       for (let child of children) {
-        //console.log('making children: ', board,child)
         let currVal = minimax (child, currDepth+1, maxDepth,opponentNum) 
         if (currVal > maxValue) maxValue = currVal
         if (currVal < minValue) minValue = currVal
@@ -215,10 +175,8 @@ class AIPlayer extends Player {
 
 
     let myNum = super.getPlayerNum()
-  // let opponentNum = Math.max(((myNum)+1)%3,1)
+  
   let opponentNum = getOpponentNum(myNum)
-    //console.log('my num is: ',myNum)
-    //console.log('my opponents num is: ', oppoenentNum)
 
     let currDepth = 0
     let maxDepth = this.#depth
@@ -231,10 +189,7 @@ class AIPlayer extends Player {
       if (!board[i]) {
         let childBoard = [...board]
         childBoard[i] = myNum
-        //console.log(board,child)
-        //console.log(childBoard, currDepth, maxDepth,opponentNum)
         let currMinimax = minimax (childBoard, currDepth, maxDepth,opponentNum) 
-        //console.log('CurrMinimax: ',currMinimax)
         if (currMinimax > maxValue) {maxValue = currMinimax;iMax=i}
         if (currMinimax < minValue) {minValue = currMinimax;iMin=i}
 
@@ -271,9 +226,6 @@ class AIPlayer extends Player {
 
 class Model {
   #board
-  //#activePlayer
-  //#player1
-  //#player2
   #winner
   #controller
 
@@ -283,17 +235,10 @@ class Model {
 
   constructor () {
     this.#board = Array(BOARD_SIZE).fill(null)
-    //this.#player1 = new Player(1)
-    //this.#player2 = new Player(2)
-    //this.#activePlayer =this.#player1
   }
 
   setBoardAfterMove(boardIndex) {
     this.#board[boardIndex] = activePlayer.getPlayerNum()
-    //activePlayer = activePlayer.getNextPlayer()
-    
-    //this.#board[boardIndex] = this.#activePlayer.getPlayerNum()
-    //this.#activePlayer = this.#activePlayer.getNextPlayer()
   }
 
   getBoard() {
@@ -343,7 +288,6 @@ class Controller {
     if (!currentBoard[boxClickedIndex]) {
       this.#model.setBoardAfterMove(boxClickedIndex)
       currentBoard = this.#model.getBoard()
-      //return currentBoard
       view.display(currentBoard)
       let outcome = this.checkIfGameIsOver(currentBoard)
       if (outcome > 0) view.gameOver(outcome)
@@ -353,7 +297,6 @@ class Controller {
         activePlayer.makeDecision(currentBoard)
       } 
     }
-    //return null
   }
 
 }
@@ -370,19 +313,15 @@ class View {
   }
 
   display (board) {
-    //console.log('display')
-    
     board.forEach((el,i) => el ? boxes[i].textContent = chars[el-1] : boxes[i].textContent = '')
     activePlayerMsg.textContent = `Active Player: ${activePlayer.getTextID()}`
   }
 
   boardClicked(boxClickedIndex) {
-    //console.log('in view:', boxClickedIndex)
     this.#controller.moveSelected(boxClickedIndex)
   }
 
   gameOver(outcome) {
-     // console.log('game over')
       gameActive = false
       msg.textContent = outcome < 3 ? `Player ${activePlayer.getTextID()} won!` : 'Tie game!'
   }
@@ -401,19 +340,15 @@ const initPlayer = (str,playerNum) => {
   let newPlayer
   switch(str) {
     case 'human':
-      //console.log('human case')
       newPlayer = new HumanPlayer(playerNum)
       break;
     case 'ai-easy':
-      //console.log('ai-easy case')
       newPlayer = new AIPlayer(playerNum,EASY_DEPTH)
       break;
     case 'ai-medium':
-      //console.log('ai-medium case')
       newPlayer = new AIPlayer(playerNum,MEDIUM_DEPTH)
       break;
     case 'ai-hard':
-      //console.log('ai-hard case')
       newPlayer = new AIPlayer(playerNum,HARD_DEPTH)
       break;
   }
@@ -424,7 +359,6 @@ const initPlayer = (str,playerNum) => {
   const player1 = initPlayer(player1TypeValue,1)
   const player2 = initPlayer(player2TypeValue,2)
 
-  //console.log(player1TypeValue)
 model = new Model()
 controller = new Controller()
 view = new View()
@@ -434,19 +368,11 @@ controller.setModel(model)
 controller.setView(view)
 view.setController(controller)
 
-//const player1 = new Player(1, player1TypeValue)
-//const player2 = new Player(2, player2TypeValue)
-
-
 player1.setNextPlayer(player2)
 player2.setNextPlayer(player1)
 
 activePlayer = player1
 activePlayer.makeDecision(Array(BOARD_SIZE))
-
-//console.log(player1)
-//console.log(player2)
-
 };
 
 
@@ -456,16 +382,14 @@ function onClickStart (e) {
   restart.disabled=false
   player1Type.disabled = true
   player2Type.disabled = true
-  //boxes.forEach(box=>box.textContent = 'X')
   activePlayerMsg.textContent = 'Active Player: X'
-  //console.log('start pressed')
   gameActive = true
   msg.textContent = 'Get three in a row to win!'
   init(player1Type.value,player2Type.value)
 }
 
 function onClickRestart (e) {
-  //console.log('reset pressed')
+
   
   gameActive = false
   start.disabled=false
@@ -480,85 +404,8 @@ function onClickRestart (e) {
 function boardClicked (e) {
   if (gameActive && activePlayer.isHumanPlayer() === true && !e.target.classList.contains('board')) {
   boxClickedIndex = parseInt(e.target.id[e.target.id.length -1])
-  //console.log(boxClickedIndex)
   view.boardClicked(boxClickedIndex)
   }
 }
 
 
-/*
-function minimax(board,currDepth,maxDepth,player) {
-    //base case -> return eval(board)
-
-
-    //makeChildren
-    //for each child, determine both min and max
-
-    //if player 1, return [max,myMove]
-    //else return [min,myMove]
-}
-*/
-/*
-
-function minimax  (board, currDepth, maxDepth,player)  {
-
-  const makeChildren = (board,player) => {
-    //console.log('I am about to make children:')
-    //console.log('This is the current board:', board)
-    let children = []
-
-    for (let i = 0; i < BOARD_SIZE; i++) {
-      if (!board[i]) {
-        let child = {}
-        child.board = [...board]
-        child.board[i] = player
-        child.move = i
-        children.push(child)
-        console.log('Parent Board: ', board)
-        console.log('player',player)
-        console.log('Child Board: ', child.board)
-      }
-    }
-    return children
-  }
-
-  const numWaysPlayerWins = (num,board) => {
-      let opponent = Math.max(((num + 1) % 3),1)
-      let possibleWaystoWin = waysToWinArray.filter(w => {w.split('').map(num=> { return board[parseInt(num)] === opponent ? 1 : 0  }).reduce((a,c)=>a+c) === 0})
-      console.log('In Num Ways to Win:',board,num,possibleWaystoWin)
-      return possibleWaystoWin.length
-  }
-
-  const evaluateBoard = board => {
-    return numWaysPlayerWins(1,board) - numWaysPlayerWins(2,board)
-  }
-
-
-  if (currDepth === maxDepth) {let boardEval = evaluateBoard(board);
-    console.log("At max depth:",board,boardEval);
-    return [boardEval,-1]
-  }
-
-  let children = makeChildren(board,player)
-  let maxVal = -1000000000
-  let maxValI = -1
-  let minVal = 100000000
-  let minValI = -1
-  let nextPlayer = Math.max(((player + 1) % 3),1)
-
-  //console.log('Current Player is: ', player)
-  //console.log('Next Player Calculated as: ', nextPlayer)
-  for (let child of children) {
-    let currBoth = minimax(child.board,child.move,currDepth+1,maxDepth,nextPlayer)
-    let curr = currBoth[0]
-    console.log(curr)
-    if (curr > maxVal) {maxVal = curr;maxValI = child.move}
-    if (curr < minVal) {minVal = curr;minValI = child.move}
-  }
-
-  
-  if (player === 1) return [maxVal,maxValI]
-  return [minVal,minValI]
-}
-
-*/
